@@ -1,0 +1,44 @@
+docker service create --name redis --replicas=5 redis:3.0.6
+
+docker service create --name nginx --replicas=3 nginx
+docker service scale helloworld=5
+docker node update --availability drain worker1
+
+docker service create --name springbootdockerexample  --replicas=1 vamsikrishna/springbootdockerexample
+docker service update --publish-add 8080:8080 springbootdockerexample
+docker service update --publish-add 80:80 nginx
+
+https://blog.codeship.com/running-services-within-docker-swarm/
+
+docker service create --name redis --mode global --publish 6379:6379 redis
+
+
+docker run --name spring-boot-postgres -e POSTGRES_PASSWORD=dbpassword -e POSTGRES_DB=docker -d postgres
+docker run --name spring-boot-mysql -e MYSQL_ROOT_PASSWORD=dbpassword -e MYSQL_USER=docker -e MYSQL_PASSWORD=dbpassword -e MYSQL_DATABASE=exampledb -d postgres
+
+
+sudo yum install -y yum-utils \
+  device-mapper-persistent-data \
+  lvm2
+sudo yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum-config-manager --enable rhui-REGION-rhel-server-extras
+
+ sudo yum install docker-ce -y
+ 
+ 
+ wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-linux-x64.tar.gz
+
+ cd /opt/jdk1.8.0_191/
+alternatives --install /usr/bin/java java /opt/jdk1.8.0_191/bin/java 2
+alternatives --config java
+
+alternatives --install /usr/bin/jar jar /opt/jdk1.8.0_191/bin/jar 2
+alternatives --install /usr/bin/javac javac /opt/jdk1.8.0_191/bin/javac 2
+alternatives --set jar /opt/jdk1.8.0_191/bin/jar
+alternatives --set javac /opt/jdk1.8.0_191/bin/javac
+
+export JAVA_HOME=/opt/jdk1.8.0_191
+export JRE_HOME=/opt/jdk1.8.0_191/jre
+export PATH=$PATH:/opt/jdk1.8.0_191/bin:/opt/jdk1.8.0_191/jre/bin
