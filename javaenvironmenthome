@@ -1,0 +1,24 @@
+---
+ - hosts: ansiblenode1
+   tasks:
+     - name: Install Apache webserver
+       yum:  name=httpd state=latest
+     - name: setting java path
+       file:
+         path: /etc/profile.d/java.sh
+         state: touch
+         mode: 0777
+     - name: ADD JAVA_HOME to the PATH
+       lineinfile:
+         dest: /etc/profile.d/java.sh
+         line: '{{ item }}'
+       with_items:
+         - 'export JAVA_HOME=/opt/jdk1.8.0_192'
+         - 'export PATH=${JAVA_HOME}/bin:${PATH}'
+     - name: ADD JRE_HOME to the PATH
+       lineinfile:
+         dest: /etc/profile.d/java.sh
+         line: '{{ item }}'
+       with_items:
+         - 'export JRE_HOME=/opt/jdk1.8.0_192/jre'
+         - 'export PATH=${JRE_HOME}/bin:${PATH}'
