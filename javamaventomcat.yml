@@ -1,0 +1,26 @@
+
+---
+ - hosts: ansiblenode1
+   tasks:
+     - name: Install Apache webserver
+       yum:  name=httpd state=latest
+     - name: Install Java 8
+       yum:  name=java state=present
+     - name: Download Apache Maven 3.6.0
+       get_url:
+         url: "http://mirrors.estointernet.in/apache/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz"
+         dest: /opt
+     - name: Extract Apache Maven 3.6.0
+       unarchive:
+         src: "/opt/apache-maven-3.6.0-bin.tar.gz"
+         dest: /opt
+         remote_src: yes
+     - name: Download Apache Tomcat 8.5
+       get_url:
+         url: "http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.35/bin/apache-tomcat-8.5.35.tar.gz"
+         dest: /opt
+     - name: Extract Apache Tomcat 8.5
+       unarchive:
+         src: "/opt/apache-tomcat-8.5.35.tar.gz"
+         dest: /opt
+         remote_src: yes
