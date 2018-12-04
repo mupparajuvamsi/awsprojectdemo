@@ -1,0 +1,23 @@
+---
+ - hosts: ansiblenode1
+   tasks:
+     - name: Create Java environment variable path in /etc/profile.d/java.sh
+       file:
+         path: /etc/profile.d/java.sh
+         state: touch
+         mode: 0777
+     - name: Download Apache Maven 3.6.0
+       get_url:
+         url: http://mirrors.fibergrid.in/apache/maven/maven-3/3.6.0/binaries/ap                                                                             ache-maven-3.6.0-bin.tar.gz
+         dest: /opt
+     - name: Extract Apache Maven 3.6.0
+       unarchive:
+         src: /opt/apache-maven-3.6.0-bin.tar.gz
+         dest: /opt
+         remote_src: true
+     - name: Install Apache webServer
+       yum: name=httpd state=present
+     - name: Start httpd service
+       service:
+         name: httpd
+         state: started
