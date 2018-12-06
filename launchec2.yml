@@ -1,0 +1,18 @@
+---
+ - hosts: localhost
+   vars:
+     key_name: dockerkey
+     instance_type: t2.micro
+     image: ami-0b500ef59d8335eee
+     region: us-east-2
+   tasks:
+     - name: Launch instance
+       ec2:
+         key_name: "{{ key_name }}"
+         instance_type: "{{ instance_type }}"
+         image: "{{ image }}"
+         region: "{{ region }}"
+         wait: yes
+         count: 1
+         vpc_subnet_id: subnet-d10929b9
+         assign_public_ip: yes
