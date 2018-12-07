@@ -1,0 +1,24 @@
+---
+ - hosts: all
+   tasks:
+     - name: Check if Maven alredy exists or not
+       stat: path=/opt/apache-maven-3.6.0
+       register: maven_result
+     - name: Download Apache maven if it is not installed
+       get_url:
+         url: "http://mirrors.estointernet.in/apache/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz"
+         dest: /opt
+       register: result
+       when: not maven_result.stat.exists
+---
+ - hosts: all
+   tasks:
+     - name: Check if Maven alredy exists or not
+       stat: path=/opt/apache-maven-3.6.0
+       register: maven_result
+     - name: Download Apache maven if it is not installed
+       get_url:
+         url: "http://mirrors.estointernet.in/apache/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz"
+         dest: /opt
+       register: result
+       when: not maven_result.stat.exists
