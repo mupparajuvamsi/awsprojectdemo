@@ -1,0 +1,11 @@
+---
+ - hosts: all
+   tasks:
+     - name: Add Epel Repository
+       yum_repository:
+         name: mongodb-org-4.0
+         description: EPEL Yum Repo
+         baseurl: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/
+         enabled: yes
+         gpgcheck: yes
+         gpgkey: https://www.mongodb.org/static/pgp/server-4.0.asc
