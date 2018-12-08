@@ -1,0 +1,13 @@
+---
+ - hosts: all
+   tasks:
+     - name: Check if rpm is already installed
+       yum:
+         list: wget
+         # If not installed yum_list.results[*].yumstate != installed
+       register: yum_list
+
+     - name: Conditionally do next thing
+       debug:
+         msg: "Not installed"
+       when: yum_list.results | selectattr("yumstate", "match", "installed") | list | length == 0
