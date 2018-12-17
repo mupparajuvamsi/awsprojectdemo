@@ -1,0 +1,48 @@
+---
+ - hosts: ansiblenode1
+   tasks:
+     - name: Install packages
+       yum: pkg={{item}} state=installed
+       with_items:
+        - device-mapper-persistent-data
+        - lvm2
+		
+
+
+
+version: '3.1'
+services:
+  mysqlservice:
+    image: mysql/mysql-server
+    container_name: mysqltest
+    ports:
+    - "3306:3306"
+    environment:
+      MYSQL_DATABASE: "test"
+      MYSQL_USER: "test"
+      MYSQL_PASSWORD: "test"
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  tomcatservice:
+    image: tomcat
+    container_name: mytomcattest
+    ports:
+    - "8080:8080"
+    depends_on:
+      - mysqlservice
+	  
+	  
+	  
+---
+ - hosts: ansiblenode1
+   tasks:
+     - name: Install packages
+       yum: pkg={{item}} state=installed
+       with_items:
+        - device-mapper-persistent-data
+        - lvm2
+     - name: Execute multiple commands
+       command:  "{{item}}"
+       with_items:
+        - yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+        - yum-config-manager --enable rhui-REGION-rhel-server-extras
