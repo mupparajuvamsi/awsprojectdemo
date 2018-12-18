@@ -39,3 +39,7 @@ services:
     - "8080:8080"
     depends_on:
       - postgresservice
+
+
+docker run --name spring-boot-postgres -e POSTGRES_PASSWORD=dbpassword -e POSTGRES_DB=docker -d postgres
+docker run --name spring-boot-docker-postgresql --link spring-boot-postgres:postgres -p 8080:8080 -d wonwoo/spring-boot-docker-postgresql
