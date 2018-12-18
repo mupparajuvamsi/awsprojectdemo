@@ -1,0 +1,41 @@
+
+version: '3.1'
+services:
+  mysqlservice:
+    image: mysql/mysql-server
+    container_name: mysqltest
+    ports:
+    - "3306:3306"
+    environment:
+      MYSQL_DATABASE: "test"
+      MYSQL_USER: "test"
+      MYSQL_PASSWORD: "test"
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  postgresservice:
+    image: postgres
+    container_name: postgrestest
+    ports:
+    - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: example
+
+	  
+	  
+version: '3.1'
+services:
+  postgresservice:
+    image: postgres
+    container_name: spring-boot-postgres
+    ports:
+    - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: dbpassword
+      POSTGRES_DB: docker
+  springbootapp:
+    image: wonwoo/spring-boot-docker-postgresql
+    container_name: springbootapptest
+    ports:
+    - "8080:8080"
+    depends_on:
+      - postgresservice
