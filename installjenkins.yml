@@ -1,0 +1,22 @@
+---
+ - hosts: ansiblenode1
+   tasks:
+     - name: Install Java 8 using YUM
+       yum: name=java state=present
+     - name: Download Jenkins repo yum URL 
+       get_url:
+         url: http://pkg.jenkins-ci.org/redhat/jenkins.repo
+         dest: /etc/yum.repos.d/jenkins.repo
+     - name: Import GPG Key
+       rpm_key:
+         state: present
+         key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+     - name: Install Jenkins
+       yum:
+         name: jenkins
+         state: present
+	 - name: Start Jenkins service and enable on boot
+	   service:
+         name: jenkins
+         state: started
+         enabled: yes 
