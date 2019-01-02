@@ -1,0 +1,32 @@
+---
+ - hosts: redhat
+   tasks:
+     - name: Check Apcache maven is there or not
+       stat:
+         path: /opt/apache-maven-3.6.0/
+       register: stat_result
+     - name: Download Apache Maven if it is not exists
+       get_url:
+         url: http://mirrors.estointernet.in/apache/maven/maven-3/3.6.0/binaries                               /apache-maven-3.6.0-bin.tar.gz
+         dest: /opt
+       when: stat_result.stat.exists == False
+     - name: Extract Apache Maven
+       unarchive:
+         src: /opt/apache-maven-3.6.0-bin.tar.gz
+         dest: /opt
+         remote_src: true
+     - name: Check for Apache Maven environment variable
+       stat:
+         path: /etc/profile.d/maven.sh
+       register: mavenenv_result
+     - name: Create file /etc/profile.d/maven.sh
+       file:
+         path: /etc/profile.d/maven.sh
+         state: touch
+     - name: ADD MAVEN_HOME to the PATH
+       lineinfile:
+         dest: /etc/profile.d/maven.sh
+         line: '{{ item }}'
+       with_items:
+         - 'export MAVEN_HOME=/opt/apache-maven-3.6.0'
+         - 'export PATH=${MAVEN_HOME}/bin:${PATH}'
