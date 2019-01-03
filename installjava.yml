@@ -1,0 +1,41 @@
+---
+ - hosts: localhost
+   tasks:
+     - name: Check Java folder is there or not
+       stat:
+         path: /opt/jdk1.8.0_192/
+       register: java_result
+     - name: Download Java if it not there
+       get_url:
+         url: "https://download.oracle.com/otn-pub/java/jdk/8u192-b12/750e1c8617                                                                             c5452694857ad95c3ee230/jdk-8u192-linux-x64.tar.gz"
+         dest: /opt
+         headers: 'Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense                                                                             =accept-securebackup-cookie'
+       when: java_result.stat.exists == False
+     - name: Check java tar file is there or not
+       stat:
+         path: /opt/jdk-8u192-linux-x64.tar.gz
+       register: tar_result
+     - name: Extract tar file
+       unarchive:
+         src: /opt/jdk-8u192-linux-x64.tar.gz
+         dest: /opt
+         remote_src: true
+       when: tar_result.stat.exists == True
+     - name: Check java environment varibale file is there ot not
+       stat:
+         path: /etc/profile.d/java.sh
+       register: env_result
+     - name: Create Java environment variavke file
+       file:
+         path: /etc/profile.d/java.sh
+         state: touch
+       when: env_result.stat.exists == False
+     - name: Set JAVA_HOME To the PATH
+       lineinfile:
+         dest: /etc/profile.d/java.sh
+         line: '{{ item }}'
+       with_items:
+         - 'export JAVA_HOME=/opt/jdk1.8.0_192'
+         - 'export PATH=${JAVA_HOME}/bin:${PATH}'
+     - name: Source the environement varibale
+       shell: "source /etc/profile.d/java.sh"
