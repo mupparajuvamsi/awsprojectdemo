@@ -5,7 +5,7 @@
 	<groupId>com.companyname.demo</groupId>
 	<artifactId>springbootdockerexample</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>springbootdockerexample</name>
 	<url>http://maven.apache.org</url>
